@@ -201,7 +201,7 @@ class Interface:
         self.add_user_image = None
         self.chat_image = None
         self.home_image = None
-        self.logo_image = self._load_image('assets/logo_bot.ico')
+        self.logo_image = self._load_image('assets/logo_bot.png')
         self.home_image = self._load_image('assets/home.png', 30, 30)
         self.config_image = self._load_image('assets/configuracoes.png', 30, 30)
         self.options_image = self._load_image('assets/options.png', 30, 30)

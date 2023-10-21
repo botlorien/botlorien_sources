@@ -428,7 +428,8 @@ class Postgresql(PostgresqlConnection):
         :rtype: list
         """
         self.cursor.execute(script)
-        return self.cursor.fetchall()
+        if 'select' in script.lower():
+            return self.cursor.fetchall()
 
     def execute_script(self, script, **kwargs):
         """
@@ -1189,10 +1190,10 @@ class BotsDatabase:
         except Exception as e:
             logging.exception(e)
             invalid_authentication = True
-        if credentials[0] not in ('127.0.0.1', 'localhost') or credentials[
-            1] != database or invalid_authentication:
-            os.remove(f'parameters/{database.lower()}_credentials.bot')
-            raise BotsDatabase.WrongBotDatabase
+        # if credentials[0] not in ('127.0.0.1', 'localhost') or credentials[
+        #     1] != database or invalid_authentication:
+        #     os.remove(f'parameters/{database.lower()}_credentials.bot')
+        #     raise BotsDatabase.WrongBotDatabase
 
 
 class TableBots(BotsDatabase):

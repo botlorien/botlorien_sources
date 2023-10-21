@@ -1302,6 +1302,11 @@ class Handler:
         return zeros + str(value)
 
     @staticmethod
+    def add_left_space(value, len_desired):
+        zeros = ''.join([' ' for _ in range(len_desired - len(str(value)))])
+        return zeros + str(value)
+
+    @staticmethod
     def get_day_greetings():
         current_hour = datetime.now().hour
         if current_hour < 12:
