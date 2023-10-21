@@ -4,7 +4,7 @@ from supabase import create_client, Client
 class Supabase():
     def __init__(self):
         self.url = "https://ebvsmcekeiyilmlnbgpc.supabase.co"
-        self.key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVidnNtY2VrZWl5aWxtbG5iZ3BjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5MzQwODk2NCwiZXhwIjoyMDA4OTg0OTY0fQ.O96y28NqaC4XfW_PZrn6lhnoNNZayZg5gGWUBEMlBpc"
+        self.key = os.getenv('supabase')
         self.sup = create_client(self.url, self.key)
 
     def create_bucket(self,name):
@@ -27,8 +27,5 @@ class Supabase():
 
 if __name__=='__main__':
     sup = Supabase()
-    #sup.create_bucket('Teste_files')
-    file_=r'C:\Users\06213\OneDrive\GitHub\CARVALIMA\priority_classes\base\JohnDeere.xlsx'
-    #sup.upload_file(file_)
     sup.generate_url_to_download()
     sup.list_files()

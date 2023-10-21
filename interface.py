@@ -186,7 +186,7 @@ class Interface:
 
     """
 
-    def __init__(self, appname: str = 'Carvalima',user:str=''):
+    def __init__(self, appname: str = 'BotLórien',user:str=''):
         """
         Constructor method.
         Initializes the SswInterface object with several tkinter widgets and an instance of the SswCript class.
@@ -201,7 +201,7 @@ class Interface:
         self.add_user_image = None
         self.chat_image = None
         self.home_image = None
-        self.logo_image = self._load_image('assets/logo_carvalima.ico')
+        self.logo_image = self._load_image('assets/logo_bot.ico')
         self.home_image = self._load_image('assets/home.png', 30, 30)
         self.config_image = self._load_image('assets/configuracoes.png', 30, 30)
         self.options_image = self._load_image('assets/options.png', 30, 30)

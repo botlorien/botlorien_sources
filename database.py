@@ -116,7 +116,7 @@ class PostgresqlConnection:
 
 class Postgresql(PostgresqlConnection):
 
-    def __init__(self, database: str = 'Carvalima'):
+    def __init__(self, database: str = 'botlorien'):
         """
         Initialize a PostgreSQL connection.
 
@@ -509,14 +509,14 @@ class SqliteConnection:
             finally:
                 self.close()
             contador_time_out += 1
-        if contador_time_out > time_out and raise_exception:
+        if contador_time_out >= time_out and raise_exception:
             raise SqliteConnection.ConnectionFail
         return ret
 
 
 class Sqlite(SqliteConnection):
 
-    def __init__(self, database: str = 'Carvalima'):
+    def __init__(self, database: str = 'botlorien'):
         """
         Initialize a Sqlite connection.
 
@@ -789,7 +789,7 @@ class Sqlite(SqliteConnection):
 
 class DatabaseInterface():
 
-    def __init__(self, database: str = 'Carvalima'):
+    def __init__(self, database: str = 'botlorien'):
         """
         Constructor method.
         Initializes the DatabaseInterface object with several tkinter widgets and an instance of the DataBaseCript class.
@@ -1053,7 +1053,7 @@ class DataBaseCript:
         """
         appdata_path = os.getenv('APPDATA')
         appdata_dir = os.path.dirname(appdata_path)
-        path_store_key = os.path.abspath(appdata_dir + '/Local/cvl')
+        path_store_key = os.path.abspath(appdata_dir + '/Local/rpa')
         return path_store_key
 
     def generate_secret_key(self):
@@ -1157,7 +1157,7 @@ class DataBaseCript:
 
 class BotsDatabase:
 
-    def __init__(self, database: str = 'BotsCarvalima'):
+    def __init__(self, database: str = 'botlorien'):
         """
         Initialize the BotsDatabase object.
 
@@ -1189,7 +1189,7 @@ class BotsDatabase:
         except Exception as e:
             logging.exception(e)
             invalid_authentication = True
-        if credentials[0] not in ('10.0.20.40', '10.0.20.150', 'localhost') or credentials[
+        if credentials[0] not in ('127.0.0.1', 'localhost') or credentials[
             1] != database or invalid_authentication:
             os.remove(f'parameters/{database.lower()}_credentials.bot')
             raise BotsDatabase.WrongBotDatabase
@@ -1693,8 +1693,8 @@ class BotTable:
 
 def migrate_data_bots_server_bots():
     import pandas as pd
-    db_from = Postgresql('BotsCarvalima')
-    db_to = Postgresql('BotsCarvalimaN')
+    db_from = Postgresql('botlorien')
+    db_to = Postgresql('botlorienb')
 
     # Select the data from old database
     script = "select * from bots"
@@ -1724,8 +1724,8 @@ def migrate_data_bots_server_bots():
 
 def migrate_data_bots_server_tasks():
     import pandas as pd
-    db_from = Postgresql('BotsCarvalima')
-    db_to = Postgresql('BotsCarvalimaN')
+    db_from = Postgresql('botlorien')
+    db_to = Postgresql('botlorienb')
 
     # Select the data from old database
     script = "select * from tasks"
@@ -1755,8 +1755,8 @@ def migrate_data_bots_server_tasks():
 
 def migrate_data_bots_server_tasks_results():
     import pandas as pd
-    db_from = Postgresql('BotsCarvalima')
-    db_to = Postgresql('BotsCarvalimaN')
+    db_from = Postgresql('botlorien')
+    db_to = Postgresql('botlorienb')
 
     # Select the data from old database
     script = "select * from tasks_results"

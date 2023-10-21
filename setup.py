@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="priority_classes",
-    version="0.30",
+    name="botlorien_sources",
+    version="1.0.0",
     packages=find_packages(),
-    description='Priority Classes Package for carvalima bots',
+    description='Main source classes for BotLórien RPA Development',
     author='Ben-Hur P. B. Santos',
-    author_email='benstronics@gmail.com',
+    author_email='botlorien@gmail.com',
     install_requires=[
         'selenium',
         'webdriver-manager',
