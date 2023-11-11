@@ -1790,5 +1790,4 @@ def migrate_data_bots_server_tasks_results():
 
 
 if __name__ == '__main__':
-    # migrate_data_bots_server_tasks()
-    migrate_data_bots_server_tasks_results()
+    pass

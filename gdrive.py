@@ -204,6 +204,4 @@ class Gdrive:
 
 
 if __name__ == '__main__':
-    print(os.getcwd())
-    drive = Gdrive()
-    drive.upload_file_if_not_exists('pdf_3550217-22.pdf', 'unidades')
+    pass

@@ -344,14 +344,14 @@ class Interface:
         print(self.counter_img)
         self.counter_img = self.counter_img if abs(self.counter_img) < len(self.list_imgs) else 0
         self.current_img = self.list_imgs[self.counter_img]
-        gb.init_root().after(100, lambda: self.img_frame_label_img.configure(image=self.current_img))
+        gb.init_root().after(10, lambda: self.img_frame_label_img.configure(image=self.current_img))
 
     def back_img(self):
         self.counter_img -=1
         print(self.counter_img)
         self.counter_img = self.counter_img if abs(self.counter_img) < len(self.list_imgs) else 0
         self.current_img = self.list_imgs[self.counter_img]
-        gb.init_root().after(100, lambda: self.img_frame_label_img.configure(image=self.current_img))
+        gb.init_root().after(10, lambda: self.img_frame_label_img.configure(image=self.current_img))
 
     def _ui_options_label(self):
         self.options_frame_label = customtkinter.CTkLabel(self.options_frame, text=f"  Opções\n{self.name_bot}",
@@ -546,9 +546,9 @@ class Interface:
 
     def _config_img_options_menu_buttons_standard(self, pos):
         self.last_button_state = False
-        gb.init_root().after(100, lambda: self.img_options_buttons[pos].configure(fg_color=self.default_fg_color))
-        gb.init_root().after(100, lambda: self.img_options_buttons[pos].configure(hover_color=self.default_hv_color))
-        gb.init_root().after(100, lambda: self.img_options_buttons[pos].configure(state='normal'))
+        gb.init_root().after(10, lambda: self.img_options_buttons[pos].configure(fg_color=self.default_fg_color))
+        gb.init_root().after(10, lambda: self.img_options_buttons[pos].configure(hover_color=self.default_hv_color))
+        gb.init_root().after(10, lambda: self.img_options_buttons[pos].configure(state='normal'))
 
     def exec_func(self, func, pos):
         try:
@@ -1057,6 +1057,7 @@ class Interface:
         """
         # load and create background image
         path = os.path.join(os.getcwd(), os.path.abspath(path_image))
+        #Image.open(path)
         if width is None and height is None:
             with Image.open(path) as img:
                 # Get image dimensions
@@ -1065,7 +1066,10 @@ class Interface:
                 if max_size >0:
                     width, height = self._resize_img_proportional(max_size,width, height)
                     print(width, height )
-        return customtkinter.CTkImage(Image.open(path), size=(width, height))
+
+        with Image.open(path) as img:
+            img_obg = img.copy()
+        return customtkinter.CTkImage(img_obg, size=(width, height))
 
     def _resize_img_proportional(self,max_size,width, height):
         # Calculate the aspect ratio
@@ -1198,6 +1202,4 @@ class OutputRedirector:
 ui = Interface()
 
 if __name__ == '__main__':
-    list_name_img_buttons = ['Avançar','Voltar']
-    list_func_img_buttons = [ui.next_img,ui.back_img]
-    ui.ui_show_imgs('imgs','assets',list_name_img_buttons,list_func_img_buttons,width=None,height=None)
+    pass

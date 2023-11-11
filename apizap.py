@@ -603,4 +603,4 @@ def run_api(force_port:int=0):
 
 
 if __name__ == '__main__':
-    run_api()
+    pass

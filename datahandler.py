@@ -142,6 +142,17 @@ class Handler:
 
         return dict_file
 
+    @staticmethod
+    def get_dummy():
+        # Get the current time in seconds since the epoch
+        timestamp = time.time()
+
+        # Convert the timestamp to milliseconds
+        dummy = int(timestamp * 1000)
+
+        print(dummy)
+        return dummy
+
 
 
     @staticmethod
@@ -548,7 +559,7 @@ class Handler:
         :return: The converted column.
         :rtype: pandas.Series
         """
-
+        table[column] = table[column].astype('str')
         def adjust_decimal(valor):
             decimal_sep = [valor[i] for i in range(len(valor) - 1, -1, -1) if valor[i] == ',' or valor[i] == '.']
             if len(decimal_sep) > 0:
@@ -857,8 +868,8 @@ class Handler:
                 table_aux = df.loc[cut_ini:]
             else:
                 table_aux = df.loc[cut_ini:cut_fim]
-            name_file = f'{name_file}_part_{i + 1}'
-            self.to_csv(table_aux, name_file, folder_to_salve)
+            filename = f'{name_file}_part_{i + 1}'
+            self.to_csv(table_aux, filename, folder_to_salve)
 
     @staticmethod
     def get_str_format_datetime_by_switch_case(i):
@@ -939,7 +950,7 @@ class Handler:
                 print(format_d)
         return table[column]
 
-    def _convert_column_to_datetime(self, table, column):
+    def convert_column_to_datetime(self, table, column):
         """
         Convert a column of a table to datetime.
 
@@ -1103,7 +1114,7 @@ class Handler:
             # verify if name column seem like a name column date
             if ignore_type_columns is None or column.lower() not in ignore_type_columns:
                 if True in [True for arg in dtypes['datetime'] if arg.lower() in column.lower()]:
-                    table[column] = self._convert_column_to_datetime(table, column)
+                    table[column] = self.convert_column_to_datetime(table, column)
 
             # verify if name column seem like a name column time
             if ignore_type_columns is None or column.lower() not in ignore_type_columns:
@@ -1297,13 +1308,8 @@ class Handler:
             return  date
 
     @staticmethod
-    def add_left_zero(value, len_desired):
-        zeros = ''.join(['0' for _ in range(len_desired - len(str(value)))])
-        return zeros + str(value)
-
-    @staticmethod
-    def add_left_space(value, len_desired):
-        zeros = ''.join([' ' for _ in range(len_desired - len(str(value)))])
+    def add_left_value(value, len_desired,left:str='0'):
+        zeros = ''.join([left for _ in range(len_desired - len(str(value)))])
         return zeros + str(value)
 
     @staticmethod
@@ -1521,8 +1527,98 @@ class Handler:
 
         return switcher.get(isoweekday, isoweekday)
 
+    @staticmethod
+    def thread_it(qtd_threads, list_params, function):
+        from tqdm import tqdm
+        import threading as td
+        threads = [td.Thread() for _ in range(qtd_threads)]
+        counter = 0
+        for param in tqdm(list_params, desc="Threading", unit="item"):
+            threads[counter] = td.Thread(target=lambda: function(param))
+            threads[counter].start()
+            counter += 1
+            if counter >= qtd_threads:
+                [threads[i].join() for i in range(counter)]
+                counter = 0
+        if counter < qtd_threads:
+            [threads[i].join() for i in range(counter)]
 
+    @staticmethod
+    def scan_image(image_path, output_path):
+        import cv2
+        # Read the image
+        image = cv2.imread(image_path, cv2.IMREAD_COLOR)
+
+        # Convert the image to grayscale
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        height, width = gray.shape
+        gray = cv2.resize(gray, (width * 4, height * 4), interpolation=cv2.INTER_LINEAR)
+
+        processed = cv2.equalizeHist(gray)
+
+        processed = cv2.GaussianBlur(processed, (3, 3), 0)
+
+        # Dilation can be used to strengthen the edges
+        kernel = np.ones((3, 3), np.uint8)
+        dilated = cv2.dilate(processed, kernel, iterations=1)
+
+        # Combine the dilated edges with the original image
+        processed = cv2.addWeighted(processed, 0.7, dilated, 0.8, 0.2)
+
+        # Save the preprocessed image
+        cv2.imwrite(output_path, processed)
+
+    @staticmethod
+    def remove_background(path_from, path_to):
+        from rembg import remove
+        from PIL import Image
+        # Processing the image
+        input_img = Image.open(path_from)
+
+        # Removing the background from the given Image
+        output = remove(input_img)
+
+        # Saving the image in the given path
+        output.save(path_to)
+
+    @staticmethod
+    def is_iterable(obj):
+        if isinstance(obj, str) or isinstance(obj, dict):
+            return False  # Treat strings as non-iterable
+        try:
+            iter(obj)
+            return True
+        except TypeError:
+            return False
+
+    def _append_results(self,report, result):
+        if self.is_iterable(result):
+            for k, r in enumerate(result):
+                try:
+                    report[f'result_{k+1}'] += [r]
+                except Exception as e:
+                    logging.exception(e)
+                    report[f'result_{k+1}'] = [r]
+        else:
+            try:
+                report[f'result'] += [result]
+            except Exception as e:
+                logging.exception(e)
+                report[f'result'] = [result]
+
+
+    def get_report_from_interaction(self,func, list_interaction):
+        report = {'interactor': list_interaction}
+        for param in list_interaction:
+            try:
+                result = func(param)
+                self._append_results(report, result)
+            except Exception as e:
+                logging.exception(e)
+                self._append_results(report, [f'ERROR: {str(e)}' for _ in list(report.keys())[1:]])
+        print(json.dumps(report,indent=6))
+        report = pd.DataFrame(report)
+        return report
 
 if __name__ == '__main__':
-    hd = Handler()
-    hd.append_text_to_file('teste','teste','teste_append',create_if_not_exist=True)
+    pass

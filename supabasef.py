@@ -26,6 +26,4 @@ class Supabase():
 
 
 if __name__=='__main__':
-    sup = Supabase()
-    sup.generate_url_to_download()
-    sup.list_files()
+    pass

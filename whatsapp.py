@@ -55,7 +55,7 @@ class WhatsApp:
         self.action = None
         self.initialized_whats = False
         self.home_chat = self._criar_arquivo_txt('#Home_api_Bot@', 'home_chat', 'parameters')
-        self.number = self._criar_arquivo_txt('+556596039599', 'self_number', 'parameters')
+        self.number = self._criar_arquivo_txt('+55.....', 'self_number', 'parameters')
         # self.init_browser()
 
     def _criar_pastas(self, path):
@@ -1110,8 +1110,3 @@ class WhatsApp:
 
 if __name__ == '__main__':
     pass
-    app = WhatsApp()
-    app.init_browser()
-    app.open_whats()
-    # app.send_msg_to_contact('im fine','Benstronics',r'C:\Users\06213\OneDrive\GitHub\My-Python-Projects-latest\Projetos\MyScripts\Bot_financeiro_separar_nf_fiscal\PDFS\52230392753268005262550010001366001029241760-nfe.pdf')
-    #

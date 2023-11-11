@@ -567,7 +567,4 @@ class Zap:
 
 
 if __name__ == '__main__':
-    zap = Zap()
-    zap.init_browser(headless=False)
-    zap.open_zap()
-    zap.send_msg_to_number('+5565984455091', 'oi')
+    pass

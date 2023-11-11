@@ -101,18 +101,4 @@ class Gsheets:
 
 
 if __name__ == '__main__':
-    url_sheet = 'https://docs.google.com/spreadsheets/d/1BDqgh893rfEr00eC2AwD0rIQQDlaZ_snnQqSqRuNKIs/edit#gid=1449425634'
-    gsh = Gsheets()
-    gsh.login('api_bot_teste')
-    gsh.acess_spreadsheet(url_sheet)
-    gsh.set_sheet_name('Página5')
-    gsh.get_all_records()
-    gsh.set_sheet_name('Página6')
-    gsh.get_all_records()
-    gsh.clear_sheet()
-    # credentials = ServiceAccountCredentials.from_json_keyfile_name(f'api.json', scope)
-    # client = gspread.authorize(credentials)
-    # spreadsheet = client.open_by_url('')
-    # sheet = spreadsheet.worksheet('')
-    # sheet.update()
-
+    pass

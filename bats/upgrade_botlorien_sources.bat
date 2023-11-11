@@ -8,7 +8,7 @@ REM Atualizar PIP para última versão
 python.exe -m pip install --upgrade pip
 
 REM Upgrade packages
-python -m pip install -e C:\Users\BenHur\Documents\GitHub\priority_classes
+python -m pip install -e path\to\botlorien_sources
 
 REM Freeze requirements
 python -m pip freeze > requirements.txt
