@@ -754,7 +754,7 @@ class Interface:
         self.textbox_config.insert("0.0", text)
 
     def _get_value_textbox(self):
-        self._textbox_value = str(self.textbox_config.get("1.0", "end"))  # end-1c
+        self._textbox_value = str(self.textbox_config.get("1.0", "end")).strip()  # end-1c
         print(self._textbox_value)
         self.close_textbox()
 
