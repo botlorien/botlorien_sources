@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="botlorien_sources",
-    version="1.0.3",
+    version="2.0.0",
     packages=find_packages(),
     description='Main source classes for BotLórien RPA Development',
     author='Ben-Hur P. B. Santos',

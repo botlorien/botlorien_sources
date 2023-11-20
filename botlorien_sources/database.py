@@ -1,5 +1,4 @@
 import logging
-
 import psycopg2
 import sqlite3
 import re, os, time
@@ -8,8 +7,10 @@ import customtkinter
 import string
 from cryptography.fernet import Fernet
 from PIL import Image
-import globals as gb
+import botlorien_sources.globals as gb
 
+CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
+PARENT_DIR = os.path.dirname(CURRENT_DIR)
 
 class PostgresqlConnection:
 
@@ -857,8 +858,8 @@ class DatabaseInterface():
         # criando a interface the inserção das credenciais
         self.entry_frame = customtkinter.CTkFrame(gb.init_root())
         self.entry_frame.grid(row=0, column=0, padx=(20, 20), pady=(20, 20), sticky="nsew")
-
-        image = self._load_image('assets/database.png', 30, 30)
+        img_path = os.path.join(PARENT_DIR,'assets/database.png')
+        image = self._load_image(img_path, 30, 30)
         self.label_login = customtkinter.CTkLabel(self.entry_frame, text="Insira suas credenciais!",
                                                   font=customtkinter.CTkFont(size=18, weight="bold"),
                                                   image=image,
@@ -933,9 +934,10 @@ class DatabaseInterface():
         self.messagebox_window.geometry("300x300+170+170")
         self.messagebox_window.rowconfigure(1, weight=1)
         self.messagebox_window.columnconfigure(0, weight=1)
-
-        image = self._load_image('assets/warning.png') if type_alert == 'warning' else self._load_image(
-            'assets/info.png')
+        img_path_warning = os.path.join(PARENT_DIR, 'assets/warning.png')
+        img_path_info = os.path.join(PARENT_DIR, 'assets/info.png')
+        image = self._load_image(img_path_warning) if type_alert == 'warning' else self._load_image(
+            img_path_info)
         self.label_image = customtkinter.CTkLabel(self.messagebox_window,
                                                   text='',
                                                   image=image,
@@ -953,7 +955,7 @@ class DatabaseInterface():
         self.messagebox_window.mainloop()
 
     @staticmethod
-    def _load_image(path_image, width: int = 50, height: int = 50):
+    def _load_image(path, width: int = 50, height: int = 50):
         """
         Loads an image from a specified path and resizes it to a specified width and height.
 
@@ -967,7 +969,6 @@ class DatabaseInterface():
         :rtype: customtkinter.CTkImage
         """
         # load and create background image
-        path = os.path.join(os.getcwd(), os.path.abspath(path_image))
         img = Image.open(path).copy()
         return customtkinter.CTkImage(img, size=(width, height))
 
@@ -1788,6 +1789,9 @@ def migrate_data_bots_server_tasks_results():
     # insert the different data into the new database
     db_to.to_postgresql(table, 'tasks_results', id_column=False)
 
+def teste_path():
+    print(os.path.realpath(__file__))
+    print(os.getcwd())
 
 if __name__ == '__main__':
-    pass
+    print(os.path.dirname(os.path.realpath(__file__)))

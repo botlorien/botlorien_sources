@@ -10,10 +10,12 @@ from tkcalendar import *
 import string
 import os
 from cryptography.fernet import Fernet
-import globals as gb
+import botlorien_sources.globals as gb
 from functools import partial
 import threading as td
 
+CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
+PARENT_DIR = os.path.dirname(CURRENT_DIR)
 
 class EmptyValue(Exception):
     pass
@@ -201,11 +203,11 @@ class Interface:
         self.add_user_image = None
         self.chat_image = None
         self.home_image = None
-        self.logo_image = self._load_image('assets/logo_bot.png')
-        self.home_image = self._load_image('assets/home.png', 30, 30)
-        self.config_image = self._load_image('assets/configuracoes.png', 30, 30)
-        self.options_image = self._load_image('assets/options.png', 30, 30)
-        self.greeting_image = self._load_image('assets/robo_hi.png', 150, 150)
+        self.logo_image = self._load_image(os.path.join(PARENT_DIR,'assets/logo_bot.png'))
+        self.home_image = self._load_image(os.path.join(PARENT_DIR,'assets/home.png'), 30, 30)
+        self.config_image = self._load_image(os.path.join(PARENT_DIR,'assets/configuracoes.png'), 30, 30)
+        self.options_image = self._load_image(os.path.join(PARENT_DIR,'assets/options.png'), 30, 30)
+        self.greeting_image = self._load_image(os.path.join(PARENT_DIR,'assets/robo_hi.png'), 150, 150)
         self.last_button_state = False
         self.scaling_optionemenu = None
         self.scaling_label = None
@@ -489,7 +491,7 @@ class Interface:
             list_func_home_buttons = [partial(print, button) for button in range(len(list_name_home_buttons))]
 
         self.home_options_buttons = list(range(len(list_name_home_buttons)))
-        self.bot_image = self._load_image('assets/robot.png')  # bot_walk
+        self.bot_image = self._load_image(os.path.join(PARENT_DIR,'assets/robot.png'))  # bot_walk
         for i, param in enumerate(list_name_home_buttons):
             last_row = i + 2
             self.home_options_buttons[i] = customtkinter.CTkButton(self.home_options_buttons_frame,
@@ -522,7 +524,7 @@ class Interface:
             list_func_img_buttons = [partial(print, button) for button in range(len(list_name_img_buttons))]
 
         self.img_options_buttons = list(range(len(list_name_img_buttons)))
-        self.bot_image = self._load_image('assets/robot.png')  # bot_walk
+        self.bot_image = self._load_image(os.path.join(PARENT_DIR,'assets/robot.png'))  # bot_walk
         for i, param in enumerate(list_name_img_buttons):
             last_row = i + 3
             self.img_options_buttons[i] = customtkinter.CTkButton(self.img_options_buttons_frame,
@@ -949,7 +951,7 @@ class Interface:
         self.entry_frame = customtkinter.CTkFrame(self.credentials_window)
         self.entry_frame.grid(row=0, column=0, padx=(20, 20), pady=(20, 20), sticky="nsew")
 
-        image = self._load_image(f'assets/{self.appname}_logo.png', 30, 30)
+        image = self._load_image(os.path.join(PARENT_DIR,f'assets/{self.appname}_logo.png'), 30, 30)
         self.label_login = customtkinter.CTkLabel(self.entry_frame, text="Insira suas credenciais!",
                                                   font=customtkinter.CTkFont(size=18, weight="bold"),
                                                   image=image,
@@ -1021,8 +1023,8 @@ class Interface:
         self.messagebox_window.rowconfigure(1, weight=1)
         self.messagebox_window.columnconfigure(0, weight=1)
 
-        image = self._load_image('assets/warning.png') if type_alert == 'warning' else self._load_image(
-            'assets/info.png')
+        image = self._load_image(os.path.join(PARENT_DIR,'assets/warning.png')) if type_alert == 'warning' \
+            else self._load_image(os.path.join(PARENT_DIR,'assets/info.png'))
         self.label_image = customtkinter.CTkLabel(self.messagebox_window,
                                                   text='',
                                                   image=image,
@@ -1042,7 +1044,7 @@ class Interface:
         except RuntimeError as e:
             logging.exception(e)
 
-    def _load_image(self, path_image, width: int = 50, height: int = 50, max_size:int=0):
+    def _load_image(self, path, width: int = 50, height: int = 50, max_size:int=0):
         """
         Loads an image from a specified path and resizes it to a specified width and height.
 
@@ -1056,7 +1058,6 @@ class Interface:
         :rtype: customtkinter.CTkImage
         """
         # load and create background image
-        path = os.path.join(os.getcwd(), os.path.abspath(path_image))
         #Image.open(path)
         if width is None and height is None:
             with Image.open(path) as img:

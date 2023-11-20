@@ -1,6 +1,6 @@
-from database import BotTable
+from botlorien_sources.database import BotTable
 import logging, time
-
+from functools import wraps
 TIMEOUT = 20
 
 
@@ -15,6 +15,7 @@ class BotApp:
         self.bot_name = "My_Bot_Name"  # Provide bot name
         self.bot_description = "This bot does XYZ tasks."  # Provide bot description
         self.bot_version = "1.0.0"  # Provide bot version MAJOR.MINOR.PATCH
+        self.bot_department = ''
         self.user_name = ""  # Provide user name
         self.error = None
         self.result = None
@@ -46,6 +47,15 @@ class BotApp:
         :type version: str
         """
         self.bot_version = version
+
+    def set_bot_department(self, department):
+        """
+        Set the department of the bot.
+
+        :param department: The department of the bot.
+        :type department: str
+        """
+        self.bot_department = department
 
     def set_user(self, user):
         """
@@ -170,6 +180,21 @@ class BotApp:
         self.bot.end_task(self.status, result, erro)
         if self.error is not None:
             raise self.error
+
+    def set_bot(self,bot_name,bot_description,bot_version,bot_department):
+        self.set_bot_name(bot_name)
+        self.set_bot_description(
+            bot_description)
+        self.set_bot_version(bot_version)
+        self.set_bot_department(bot_department)
+        self.init_bot()
+
+    def task(self,func=None):
+        @wraps(func)
+        def wrapper(*args,**kwargs):
+            self.set_task(func.__name__, func.__doc__)
+            return self.execute_bot_task(func)
+        return wrapper
 
 
 if __name__ == "__main__":
